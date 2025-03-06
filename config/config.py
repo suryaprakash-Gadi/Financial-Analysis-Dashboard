@@ -1,10 +1,16 @@
+
+
+import os
+
 class Config:
     API_BASE_URL = "https://stockticker.tech/server/api/company.php"
-    API_KEY = "ghfkffu6378382826hhdjgk"
+    API_KEY = os.getenv("API_KEY")  # Fetch API key from environment variables
+
     DB_CONFIG = {
-        'host': 'localhost',
-        'user': 'root',
-        'password': 'Surya@385',  # Matches your successful test
-        'database': 'financial_analysis'
+        'host': os.getenv("DB_HOST", "localhost"),
+        'user': os.getenv("DB_USER", "root"),
+        'password': os.getenv("DB_PASSWORD", ""),
+        'database': os.getenv("DB_NAME", "financial_analysis")
     }
+
     COMPANIES_FILE = "data/companies.xlsx"
