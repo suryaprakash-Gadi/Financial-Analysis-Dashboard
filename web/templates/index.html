@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Analysis Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --bg-color:rgb(135, 160, 197);
+            --card-bg:rgb(209, 41, 41);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 0;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+           
+        }
+        
+        .dashboard-title {
+            color:rgb(10, 11, 11);
+            font-weight: 700;
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .company-card {
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .company-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .company-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+        
+        .metric-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        
+        .period {
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .value {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .positive {
+            color: var(--success-color);
+        }
+        
+        .negative {
+            color: var(--accent-color);
+        }
+        
+        .neutral {
+            color: var(--warning-color);
+        }
+        
+        .progress {
+            height: 6px;
+            margin-top: 5px;
+            background-color: #eaecef;
+        }
+        
+        .card-footer {
+            background-color:rgb(63, 141, 220);
+            border-top: 1px solid #eee;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: rgb(10, 11, 11);
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .card-icon {
+            float: right;
+            font-size: 24px;
+            color: rgba(209, 19, 19, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-chart-line me-2"></i>Financial Analysis Dashboard
+            </h1>
+            <p class="text-muted">Comprehensive financial metrics for company performance</p>
+        </div>
+        
+        {% for company, data in analysis_data.items() %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card company-card">
+                    <div class="company-header">
+                        <h2 class="company-title">
+                            <i class="fas fa-building me-2"></i>{{ company }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <!-- Sales Growth Card -->
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="metric-title">Sales Growth</h3>
+                        
+                        {% for period, value in data.sales_growth.items() %}
+                        <div class="data-row">
+                            <span class="period">{{ period }}</span>
+                            <span class="value {% if value > 0 %}positive{% elif value < 0 %}negative{% else %}neutral{% endif %}">
+                                {{ value|float|round(2) }}%
+                                {% if value > 0 %}<i class="fas fa-arrow-up ms-1"></i>{% elif value < 0 %}<i class="fas fa-arrow-down ms-1"></i>{% endif %}
+                            </span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar {% if value > 0 %}bg-success{% elif value < 0 %}bg-danger{% else %}bg-secondary{% endif %}" 
+                                style="width: {% if value > 0 %}{{ (value if value <= 100 else 100) }}{% else %}0{% endif %}%;">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer text-center">
+                        Compounded Annual Growth Rate
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profit Growth Card -->
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3 class="metric-title">Profit Growth</h3>
+                        
+                        {% for period, value in data.profit_growth.items() %}
+                        <div class="data-row">
+                            <span class="period">{{ period }}</span>
+                            <span class="value {% if value != 'NaN' and value > 0 %}positive{% elif value != 'NaN' and value < 0 %}negative{% else %}neutral{% endif %}">
+                                {{ value|float|round(2) if value != 'NaN' else 'N/A' }}{% if value != 'NaN' %}%
+                                {% if value > 0 %}<i class="fas fa-arrow-up ms-1"></i>{% elif value < 0 %}<i class="fas fa-arrow-down ms-1"></i>{% endif %}
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% if value != 'NaN' %}
+                        <div class="progress mb-3">
+                            <div class="progress-bar {% if value > 0 %}bg-success{% elif value < 0 %}bg-danger{% else %}bg-secondary{% endif %}" 
+                                style="width: {% if value > 0 %}{{ (value if value <= 100 else 100) }}{% else %}0{% endif %}%;">
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-secondary" style="width: 0%"></div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer text-center">
+                        Compounded Profit Growth Rate
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ROE Card -->
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3 class="metric-title">Return on Equity</h3>
+                        
+                        {% for period, value in data.roe.items() %}
+                        <div class="data-row">
+                            <span class="period">{{ period }}</span>
+                            <span class="value {% if value > 15 %}positive{% elif value < 10 %}negative{% else %}neutral{% endif %}">
+                                {{ value|float|round(2) }}%
+                                {% if value > 15 %}<i class="fas fa-arrow-up ms-1"></i>{% elif value < 10 %}<i class="fas fa-arrow-down ms-1"></i>{% endif %}
+                            </span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar {% if value > 15 %}bg-success{% elif value < 10 %}bg-danger{% else %}bg-warning{% endif %}" 
+                                style="width: {{ (value / 30) * 100 if value > 0 else 0 }}%;">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer text-center">
+                        Return on Equity (ROE)
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="text-center text-muted mt-4">
+            <small>Last updated: {{ last_updated|default('Now') }}</small>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bars
+            setTimeout(function() {
+                document.querySelectorAll('.progress-bar').forEach(function(bar) {
+                    const currentWidth = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(function() {
+                        bar.style.transition = 'width 1s ease';
+                        bar.style.width = currentWidth;
+                    }, 100);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

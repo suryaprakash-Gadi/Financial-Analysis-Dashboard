@@ -1,0 +1,120 @@
+
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px 0;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-title {
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.company-card {
+    border-top: 4px solid var(--primary-color);
+}
+
+.company-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    border-radius: 10px 10px 0 0;
+}
+
+.company-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.metric-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--secondary-color);
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.data-row:last-child {
+    border-bottom: none;
+}
+
+.period {
+    font-weight: 500;
+    color: #666;
+}
+
+.value {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.positive {
+    color: var(--success-color);
+}
+
+.negative {
+    color: var(--accent-color);
+}
+
+.neutral {
+    color: var(--warning-color);
+}
+
+.progress {
+    height: 6px;
+    margin-top: 5px;
+    background-color: #eaecef;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+    padding: 10px 15px;
+    font-size: 12px;
+    color: #666;
+    border-radius: 0 0 10px 10px;
+}
+
+.card-icon {
+    float: right;
+    font-size: 24px;
+    color: rgba(0,0,0,0.1);
+}
