@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, url_for
 import json
 import os
 from datetime import datetime
@@ -22,15 +22,12 @@ class FinancialDataService:
         """Check if data file exists"""
         return os.path.exists(self.data_file_path)
 
-# Creating the Flask application
-app = Flask(__name__)
+# Create Flask app with explicit static and template directories
+app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['DATA_FILE'] = 'data/processed_analysis.json'
 
 # Add Python built-in functions to Jinja environment
-app.jinja_env.globals.update(
-    min=min,
-    max=max
-)
+app.jinja_env.globals.update(min=min, max=max)
 
 # Initialize the data service
 data_service = FinancialDataService(app.config['DATA_FILE'])
